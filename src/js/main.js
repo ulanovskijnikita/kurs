@@ -77,10 +77,8 @@ if (document.cookie.includes('userId')) {
     location.assign('./');
   });
 } else {
-  const yourProfile = document.body.querySelector('#yourProfile');
 
   yourRequest.classList.add('hidden');
-  yourProfile.classList.add('hidden');
   exit.innerHTML = 'Войти в аккаунт';
   exit.addEventListener('click', function() {
     location.assign('./src/php/pages/sign-in.html');
