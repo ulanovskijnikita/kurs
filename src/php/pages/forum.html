@@ -110,6 +110,13 @@
 
         const themes = await getData('SELECT themeId, themeTitle FROM theme', '../query.php');
 
+        exit.addEventListener('click', function () {
+            document.cookie = 'userId=; path=/; max-age=0;';
+            document.cookie = 'userName=; path=/; max-age=0;';
+            document.cookie = 'employee=; path=/; max-age=0;';
+            location.assign('../../../index.html');
+        });
+
         themes.forEach(item => {
             document.body.querySelector('#theme')
             .insertAdjacentHTML('beforeend', 

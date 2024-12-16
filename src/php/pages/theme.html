@@ -105,18 +105,32 @@
 
         document.forms.commetForm.text.oninput = autoWidth
 
-        const comments = await getData(`SELECT users.login, comment.commentText FROM comment JOIN users ON comment.id = users.id WHERE comment.themeId = ${localStorage.getItem(key)} ORDER BY comment.commentId DESC`, '../query.php')
+        const comments = await getData(`SELECT users.login, comment.commentText, comment.commentId FROM comment JOIN users ON comment.id = users.id WHERE comment.themeId = ${localStorage.getItem(key)} ORDER BY comment.commentId DESC`, '../query.php')
         
-
         comments.forEach(item => {
             document.body.querySelector('#current-theme')
         .insertAdjacentHTML('beforeend', 
             `<div class="col-span-ful">
-            <h3 class="pb-25">${item.login}</h3>
-            <p class="pt-25">${item.commentText}</p>
-                </div>
+                <h3 class="pb-25">${item.login}</h3>
+                <p class="pt-25">${item.commentText}</p>
+                ${(document.cookie.includes('employee')) ? `<button type="submit" class="btn mt-[50px] w-fit mx-auto col-span-2 delete-btn" data-delete="${item.commentId}">Удалить</button>` : ''}
+            </div>
             `
         )
+        })
+
+        document.body.querySelectorAll('.delete-btn').forEach(item => {
+            item.onclick = async function() {
+                const objBody = {
+                    query: `DELETE FROM comment WHERE commentId = '${this.getAttribute('data-delete')}'`
+                };
+
+                await fetch('../query.php', {
+                    method: 'POST',
+                    body: JSON.stringify(objBody)
+                });
+                location.reload();
+            }
         })
 
 
@@ -149,6 +163,13 @@
             return value.includes('userId=');
         });
         const userId = userIdCookie.substring(7);
+
+        exit.addEventListener('click', function () {
+            document.cookie = 'userId=; path=/; max-age=0;';
+            document.cookie = 'userName=; path=/; max-age=0;';
+            document.cookie = 'employee=; path=/; max-age=0;';
+            location.assign('../../../index.html');
+        });
     </script>
 </body>
 
