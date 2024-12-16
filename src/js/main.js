@@ -50,6 +50,8 @@ if (document.cookie.includes('userId')) {
     });
   });
 
+  document.body.querySelector('#forum-btn').setAttribute('href', './src/php/pages/sign-in.html')
+
   requestBtn.forEach(item => {
     item.setAttribute('href', './src/php/pages/sign-in.html');
   });
